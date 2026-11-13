@@ -99,9 +99,21 @@ export default function App() {
         <section id="contact" className="contact" data-reveal>
           <h2>Contact</h2>
           <p>Looking for a data analytics intern or junior, or need a system built? Send me a message.</p>
-          <a className="btn" href={`mailto:${ME.email}`}>Send an email</a>
-          <a className="btn ghost" href={ME.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-          <a className="btn ghost" href="https://github.com/MariaChristina01" target="_blank" rel="noreferrer">GitHub</a>
+          <div className="contact-card">
+            <div className="contact-email-block">
+              <span className="contact-email-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+              </span>
+              <div>
+                <span className="contact-label">Email me</span>
+                <a className="contact-email" href={`mailto:${ME.email}`}>{ME.email}</a>
+              </div>
+            </div>
+            <div className="contact-actions">
+              <a className="btn ghost" href={ME.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+              <a className="btn ghost" href="https://github.com/MariaChristina01" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+          </div>
         </section>
 
         <footer>© {new Date().getFullYear()} {ME.name} · {ME.location}</footer>

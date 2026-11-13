@@ -13,21 +13,36 @@ const SECTION_ICONS = {
 function useActiveSection() {
   const [current, setCurrent] = useState("");
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setCurrent(e.target.id)),
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    SECTIONS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    const updateCurrent = () => {
+      const page = document.documentElement;
+      const atBottom = window.innerHeight + window.scrollY >= page.scrollHeight - 4;
+      if (atBottom) {
+        setCurrent(SECTIONS[SECTIONS.length - 1]);
+        return;
+      }
+
+      const activationLine = window.innerHeight * 0.35;
+      let active = "";
+      SECTIONS.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section && section.getBoundingClientRect().top <= activationLine) active = id;
+      });
+      setCurrent(active);
+    };
+
+    window.addEventListener("scroll", updateCurrent, { passive: true });
+    window.addEventListener("resize", updateCurrent);
+    updateCurrent();
+    return () => {
+      window.removeEventListener("scroll", updateCurrent);
+      window.removeEventListener("resize", updateCurrent);
+    };
   }, []);
-  return current;
+  return [current, setCurrent];
 }
 
 export default function Sidebar({ me }) {
-  const current = useActiveSection();
+  const [current, setCurrent] = useActiveSection();
   const [collapsed, setCollapsed] = useState(false);
   return (
     <aside className={collapsed ? "sidebar is-collapsed" : "sidebar"}>
@@ -47,16 +62,13 @@ export default function Sidebar({ me }) {
       </div>
       <nav aria-label="Sections">
         {SECTIONS.map((s) => (
-          <a key={s} href={`#${s}`} className={current === s ? "on" : ""} title={s[0].toUpperCase() + s.slice(1)} aria-current={current === s ? "location" : undefined}>
+          <a key={s} href={`#${s}`} onClick={() => setCurrent(s)} className={current === s ? "on" : ""} title={s[0].toUpperCase() + s.slice(1)} aria-current={current === s ? "location" : undefined}>
             <svg className="sidebar-link-icon" aria-hidden="true" viewBox="0 0 24 24">{SECTION_ICONS[s]}</svg>
             <span className="sidebar-link-label">{s[0].toUpperCase() + s.slice(1)}</span>
           </a>
         ))}
       </nav>
       <div className="foot sidebar-foot">
-        <a href={`mailto:${me.email}`}>{me.email}</a>
-        <div><a href={me.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></div>
-        <div><a href="https://github.com/MariaChristina01" target="_blank" rel="noreferrer">GitHub</a></div>
         <div>{me.location}</div>
       </div>
     </aside>
