@@ -57,7 +57,7 @@ export default function Sidebar({ me }) {
         <img className="avatar-photo" src="/images/1x1%20Picture.png" alt="" />
       </button>
       <div className="sidebar-profile">
-        <h2 style={{ marginTop: 14 }}>{me.name}</h2>
+        <h2 style={{ marginTop: 14 }}>{me.name.split(" ").slice(0, 2).join(" ")}</h2>
         <p className="role">{me.role}</p>
       </div>
       <nav aria-label="Sections">
