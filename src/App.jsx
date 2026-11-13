@@ -3,6 +3,7 @@ import { ME } from "./data.js";
 import Sidebar from "./components/Sidebar.jsx";
 import Diagnostic from "./components/Diagnostic.jsx";
 import Project from "./components/Project.jsx";
+import cvUrl from "../output/pdf/Maria-Christina-Castillejo-CV.pdf";
 
 export default function App() {
   const types = ["All", ...new Set(ME.projects.map((p) => p.type))];
@@ -110,6 +111,7 @@ export default function App() {
               </div>
             </div>
             <div className="contact-actions">
+              <a className="btn" href={cvUrl} download="Maria-Christina-Castillejo-CV.pdf">Export CV</a>
               <a className="btn ghost" href={ME.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
               <a className="btn ghost" href="https://github.com/MariaChristina01" target="_blank" rel="noreferrer">GitHub</a>
             </div>
